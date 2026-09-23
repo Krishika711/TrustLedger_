@@ -3,6 +3,7 @@
 const express = require('express');
 const pool = require('../db/pool');
 const { insertLedgerEvent } = require('../utils/hashChain');
+const { canAccess } = require('../utils/rbac');
 const router = express.Router();
 
 router.post('/grant', async (req, res) => {
@@ -15,6 +16,10 @@ router.post('/grant', async (req, res) => {
   }
 
   try {
+    if (!(await canAccess(pool, granted_by, resource_id, 'admin'))) {
+      return res.status(403).json({ error: 'Only admins can grant access' });
+    }
+
     const { rows } = await pool.query(
       `INSERT INTO permissions (user_id, resource_id, access_type, granted_by)
        VALUES ($1, $2, $3, $4) RETURNING *`,
@@ -42,6 +47,10 @@ router.post('/revoke', async (req, res) => {
   }
 
   try {
+    if (!(await canAccess(pool, revoked_by, resource_id, 'admin'))) {
+      return res.status(403).json({ error: 'Only admins can revoke access' });
+    }
+
     const { rowCount } = await pool.query(
       'DELETE FROM permissions WHERE user_id = $1 AND resource_id = $2',
       [user_id, resource_id]
