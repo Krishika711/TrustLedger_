@@ -20,6 +20,7 @@ router.post('/grant', async (req, res) => {
     });
     res.json({ permission: rows[0], ledgerEvent: event });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
