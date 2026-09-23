@@ -7,6 +7,13 @@ const router = express.Router();
 
 router.post('/grant', async (req, res) => {
   const { user_id, resource_id, access_type, granted_by } = req.body;
+
+  if (!user_id || !resource_id || !access_type || !granted_by) {
+    return res.status(400).json({
+      error: 'user_id, resource_id, access_type, and granted_by are all required',
+    });
+  }
+
   try {
     const { rows } = await pool.query(
       `INSERT INTO permissions (user_id, resource_id, access_type, granted_by)
@@ -27,11 +34,25 @@ router.post('/grant', async (req, res) => {
 
 router.post('/revoke', async (req, res) => {
   const { user_id, resource_id, revoked_by } = req.body;
+
+  if (!user_id || !resource_id || !revoked_by) {
+    return res.status(400).json({
+      error: 'user_id, resource_id, and revoked_by are all required',
+    });
+  }
+
   try {
-    await pool.query(
+    const { rowCount } = await pool.query(
       'DELETE FROM permissions WHERE user_id = $1 AND resource_id = $2',
       [user_id, resource_id]
     );
+
+    if (rowCount === 0) {
+      return res.status(404).json({
+        error: 'No matching permission found to revoke',
+      });
+    }
+
     const event = await insertLedgerEvent(pool, {
       actorId: revoked_by,
       resourceId: resource_id,
