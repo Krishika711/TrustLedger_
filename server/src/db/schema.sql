@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS permissions (
   resource_id INTEGER REFERENCES resources(id),
   access_type TEXT NOT NULL,
   granted_by INTEGER REFERENCES users(id),
-  created_at TIMESTAMP DEFAULT NOW()
+  created_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE (user_id, resource_id, access_type)
 );
 
 -- created_at is TEXT (not TIMESTAMP) here on purpose: the hash chain needs the
