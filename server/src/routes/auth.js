@@ -6,6 +6,11 @@ const router = express.Router();
 
 router.post('/login', async (req, res) => {
   const { name } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: 'name is required' });
+  }
+
   try {
     const { rows } = await pool.query('SELECT * FROM users WHERE name = $1', [name]);
     if (!rows.length) return res.status(404).json({ error: 'User not found' });
