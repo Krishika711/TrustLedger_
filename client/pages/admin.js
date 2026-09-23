@@ -1,4 +1,4 @@
-// Shickey: this is your page. Working but ugly on purpose — style it,
+// Shriyansh: this is your page. Working but ugly on purpose — style it,
 // add a real login step, swap raw ID inputs for dropdowns if you have time.
 import { useState, useEffect } from 'react';
 import { apiPost, apiGet } from '../lib/api';
