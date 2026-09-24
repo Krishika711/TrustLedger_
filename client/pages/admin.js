@@ -2,9 +2,6 @@
 // composer and ledger receipts. Talks to Saanvi's API through lib/adminApi.js.
 import Head from 'next/head';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import '@fontsource-variable/bricolage-grotesque';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
 
 import { listPermissions, listResources, listUsers } from '../lib/adminApi';
 import { ACCESS_TYPES, FALLBACK_RESOURCES, FALLBACK_USERS, completeList } from '../lib/directory';
@@ -121,6 +118,12 @@ export default function Admin() {
     <>
       <Head>
         <title>TrustLedger admin</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400..800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        />
       </Head>
       <style jsx global>{`
         body {
