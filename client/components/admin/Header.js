@@ -1,6 +1,7 @@
+import Link from 'next/link';
 import s from '../../styles/admin.module.css';
 
-export default function Header({ user, onSignOut }) {
+export default function Header({ user, onSignOut, tag = 'Admin' }) {
   return (
     <header className={s.bar}>
       <div className={s.barBrand}>
@@ -11,15 +12,25 @@ export default function Header({ user, onSignOut }) {
           </g>
         </svg>
         <span className={s.brand}>TrustLedger</span>
-        <span className={s.barTag}>Admin</span>
+        <span className={s.barTag}>{tag}</span>
       </div>
       <div className={s.barUser}>
-        <span>
-          Signed in as <strong>{user.name}</strong>
-        </span>
-        <button type="button" className={s.ghostBtn} onClick={onSignOut}>
-          Sign out
-        </button>
+        {user ? (
+          <>
+            <span>
+              Signed in as <strong>{user.name}</strong>
+            </span>
+            {onSignOut && (
+              <button type="button" className={s.ghostBtn} onClick={onSignOut}>
+                Sign out
+              </button>
+            )}
+          </>
+        ) : (
+          <Link href="/admin" className={s.ghostBtn} style={{ textDecoration: 'none' }}>
+            Sign in as admin
+          </Link>
+        )}
       </div>
     </header>
   );
