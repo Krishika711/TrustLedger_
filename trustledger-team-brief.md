@@ -1,4 +1,4 @@
-# TrustLedger — Team Brief (SIH26125)
+# TrustLedger — 
 
 Deadline: tomorrow morning, Sept 24, 2026.
 
